@@ -1,0 +1,135 @@
+总结事件顺序（一个完整请求示例）
+	1.	服务器启动 → main() → tcp_listener()
+	2.	客户端连接 → server_socket.accept() → 新线程运行 STEP_service()
+	3.	接收请求 → get_tcp_packet() → 得到 (json_data, bin_data)
+	4.	STEP_service() 验证：
+	•	检查字段、方向、类型、token
+	•	登录处理（如 OP_LOGIN）
+	5.	分发处理：
+	•	TYPE_DATA → data_process()
+	•	TYPE_FILE → file_process()
+	6.	构造响应 → make_response_packet() → make_packet()
+	7.	发送给客户端
+	8.	客户端断开 → socket 关闭 → 线程结束
+1️⃣ 服务器启动
+
+触发点：方法：main()
+	•	职能：
+	1.	初始化全局日志 logger，便于后续输出服务器状态、错误、操作记录。
+	2.	解析命令行参数 _argparse() 获取 server_ip 和 server_port。
+	3.	创建基础目录：
+	•	data/ → 存放 JSON 数据
+	•	file/ → 存放上传完成的文件
+	4.	启动 TCP 监听：tcp_listener(server_ip, server_port)
+
+⸻
+
+2️⃣ TCP 监听循环
+
+方法：tcp_listener(server_ip, server_port)
+	•	职能：
+	1.	创建 TCP 套接字 socket(AF_INET, SOCK_STREAM)。
+	2.	绑定 IP 和端口。
+	3.	设置端口复用，避免重启服务器报错。
+	4.	进入无限循环等待客户端连接：
+	•	返回：一个新的客户端 socket（connection_socket）和客户端地址（addr）。
+
+	5.	为每个连接创建一个 独立线程：
+线程负责处理该客户端的所有通信。
+
+	6.	线程守护模式 th.daemon = True，主程序退出时自动结束线程。
+
+⸻
+
+3️⃣ 客户端连接处理循环
+
+方法：STEP_service(connection_socket, addr)
+	•	职能：
+	1.	循环接收客户端的 TCP 包：get_tcp_packet(connection_socket)
+	•	解析包头（JSON长度 + 二进制长度）
+	•	提取 JSON 数据和可选的二进制数据
+	2.	彩蛋处理：如果 direction = EARTH，返回“三体”信息。
+	3.	检查必要字段：
+	•	operation、type、direction
+	4.	检查请求方向：必须是 REQUEST
+	5.	检查操作类型是否合法：SAVE, GET, DELETE, UPLOAD, DOWNLOAD, LOGIN, BYE
+	6.	检查请求类型是否合法：FILE, DATA, AUTH
+	7.	处理登录 (OP_LOGIN)：
+	•	验证 username 和 password（MD5）
+	•	登录成功返回 token
+	8.	非登录操作：
+	•	验证 token
+	•	从 token 中提取 username
+	9.	创建用户目录：
+	•	data/<username>/
+	•	file/<username>/
+	•	tmp/<username>/
+	10.	根据 type 调用对应处理函数：
+	•	TYPE_DATA → data_process(...)
+	•	TYPE_FILE → file_process(...)
+	11.	客户端断开连接时关闭 socket。
+
+⸻
+
+4️⃣ 接收 TCP 数据包
+
+方法：get_tcp_packet(conn)
+	•	职能：
+	1.	从 TCP 流中读取前 8 个字节，获取：
+	•	JSON 长度 j_len
+	•	二进制长度 b_len
+	2.	循环接收完整 JSON 数据 j_bin。
+	3.	解析 JSON 为字典 json_data。
+	4.	循环接收完整二进制数据 bin_data（如上传文件块）。
+	5.	返回 (json_data, bin_data) 给 STEP_service()。
+
+⸻
+
+5️⃣ 数据请求处理（JSON 数据）
+
+方法：data_process(username, request_operation, json_data, connection_socket)
+	•	职能：
+	1.	根据 request_operation 执行：
+	•	GET → 读取 data/<username>/<key> 文件并返回 JSON。
+	•	SAVE → 保存 JSON 数据到文件。
+	•	DELETE → 删除指定 key 的 JSON 文件。
+	2.	通过 make_response_packet() 构造 STEP 协议响应包，发送给客户端。
+	3.	记录操作日志。
+
+⸻
+
+6️⃣ 文件请求处理（大文件上传/下载）
+
+方法：file_process(username, request_operation, json_data, bin_data, connection_socket)
+	•	职能：
+	1.	根据 request_operation 执行：
+	•	GET → 返回文件下载计划（大小、块数、MD5）
+	•	SAVE → 创建上传计划（生成 key，预分配临时文件）
+	•	UPLOAD → 接收文件块，写入临时文件，记录已上传块
+	•	DOWNLOAD → 返回文件块给客户端
+	•	DELETE → 删除文件
+	2.	通过 make_response_packet() 构造 STEP 响应包，发送给客户端。
+	3.	记录操作日志。
+
+⸻
+
+7️⃣ STEP 响应构造
+
+方法：make_response_packet(operation, status_code, data_type, status_msg, json_data, bin_data=None)
+	•	职能：
+	1.	填充 JSON 包字段：
+	•	operation, direction=RESPONSE, status, status_msg, type
+	2.	调用 make_packet(json_data, bin_data) → 打包为 TCP 数据包。
+	3.	返回给调用方发送到客户端。
+
+⸻
+
+8️⃣ STEP 协议打包
+
+方法：make_packet(json_data, bin_data=None)
+	•	职能：
+	1.	JSON 数据转为字节串。
+	2.	前 8 个字节：
+	•	4 字节 JSON 长度
+	•	4 字节二进制长度
+	3.	拼接 JSON 数据和可选二进制数据，形成完整 TCP 数据包。
