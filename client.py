@@ -3,7 +3,12 @@ import struct
 import json
 import hashlib
 import time
-import os  # 导入 os 模块来处理文件路径和大小
+import os
+
+#复用服务器中的函数
+#1.获取文件的md5值,
+#2.打包成 TCP 数据包
+#3.从 TCP 流中解析包
 
 def get_file_md5(filename):
     """
@@ -83,19 +88,19 @@ def get_tcp_packet(conn):
 
 def task2_login(client_socket, student_id):
     """
-    执行 Task 2 登录流程并返回 Token。
+    Execute Task 2 login process and return the Token.
     """
-    print("\n--- 正在执行 Task 2: 登录 ---")
+    print("\n--- Executing Task 2: Login ---")
 
-    # 1. 按协议准备登录信息
+    # 1. Prepare login information according to protocol
     username = student_id
     password = hashlib.md5(student_id.encode('utf-8')).hexdigest()
 
-    print(f"用户名 (student_id): {username}")
-    print(f"密码 (MD5(Student ID)): {password[:10]}...")
+    print(f"Username (student_id): {username}")
+    print(f"Password (MD5(Student ID)): {password[:10]}...")
 
-    # 2. 构建登录请求
-    login_request_json = {
+    # 2. Construct login request
+    login_request_json = {#第一次上传的登录的json格式
         "type": "AUTH",
         "operation": "LOGIN",
         "direction": "REQUEST",
@@ -103,32 +108,32 @@ def task2_login(client_socket, student_id):
         "password": password
     }
 
-    # 3. 发送请求并获取响应
-    print("正在发送登录请求...")
-    login_packet = make_packet(login_request_json, None)
-    client_socket.sendall(login_packet)
+    # 3. Send request and get response
+    print("Sending login request...")
+    login_packet = make_packet(login_request_json, None)#将用户名和密码还有登录信息打包成TCP数据包
+    client_socket.sendall(login_packet)#发送数据包到服务器
 
-    print("正在等待服务器响应...")
-    json_response, _ = get_tcp_packet(client_socket)
+    print("Waiting for server response...")
+    json_response, bin_response = get_tcp_packet(client_socket)#从TCP流中解析包，得到json_response
 
     if json_response is None:
-        print("登录失败：未收到服务器响应。")
+        print("Login failed: No response from server.")
         return None
 
-    # 4. 处理响应
-    print(f"服务器响应: {json.dumps(json_response, indent=2)}")
+    # 4. Process response
+    print(f"Server response: {json.dumps(json_response, indent=2)}")#打印服务器返回的json_response，方便调试
 
-    if json_response.get('status') == 200:
-        token = json_response.get('token')
+    if json_response.get('status') == 200:#在server.py中，STEP_service登录成功返回status 200
+        token = json_response.get('token')#也是在server.py中STEP_service，登录成功会返回token 这个token的值也是在server定义好的
         if token:
-            print("登录成功! (Task 2 完成)")
-            print(f"获取到的 Token: {token[:15]}...")
+            print("Login successful! (Task 2 completed)")
+            print(f"Received Token: {token[:15]}...")
             return token
         else:
-            print("登录失败：服务器返回 200 OK 但未包含 token。")
+            print("Login failed: Server returned 200 OK but no token included.")
             return None
     else:
-        print(f"登录失败: {json_response.get('status_msg')}")
+        print(f"Login failed: {json_response.get('status_msg')}")
         return None
 
 
@@ -136,23 +141,23 @@ def task2_login(client_socket, student_id):
 
 def task3_upload_file(client_socket, token, file_path):
     """
-    执行 Task 3 文件上传流程。
+    Execute Task 3 file upload process.
     """
-    print(f"\n--- 正在执行 Task 3: 上传文件 ---")
-    print(f"准备上传: {file_path}")
+    print(f"\n--- Executing Task 3: Upload File ---")
+    print(f"Preparing to upload: {file_path}")#文件路径
 
-    # 检查文件是否存在
+    # Check if file exists
     if not os.path.exists(file_path):
-        print(f"错误：文件不存在 {file_path}")
+        print(f"Error: File does not exist {file_path}")
         return
 
-    # --- Phase 1: 请求上传 (FILE/SAVE) ---
-    print("\nPhase 1: 请求上传许可 (FILE/SAVE)...")
+    # --- Phase 1: Request upload permission (FILE/SAVE) ---
+    print("\nPhase 1: Requesting upload permission (FILE/SAVE)...")
 
-    file_size = os.path.getsize(file_path)
-    file_key = os.path.basename(file_path)  # 使用文件名作为 key
+    file_size = os.path.getsize(file_path)#获取文件大小
+    file_key = os.path.basename(file_path)#获取文件名
 
-    save_request_json = {
+    save_request_json = {#保存请求的json数据格式。主要是发给服务器获得上传计划
         "type": "FILE",
         "operation": "SAVE",
         "direction": "REQUEST",
@@ -161,130 +166,129 @@ def task3_upload_file(client_socket, token, file_path):
         "size": file_size
     }
 
-    client_socket.sendall(make_packet(save_request_json))
-    json_response, _ = get_tcp_packet(client_socket)
+    client_socket.sendall(make_packet(save_request_json))#发送上传请求数据包
+    json_response, bin_response = get_tcp_packet(client_socket)#从TCP流中解析包
 
     if json_response is None or json_response.get('status') != 200:
-        print(f"Phase 1 失败: {json_response.get('status_msg', '无响应')}")
+        print(f"Phase 1 failed: {json_response.get('status_msg', 'No response')}")
         return
 
-    # 解析上传计划
+    # Parse upload plan 包含block_size, total_block, key
     try:
         block_size = json_response['block_size']
         total_block = json_response['total_block']
         server_key = json_response['key']
-        print("Phase 1 成功。获取上传计划:")
+        print("Phase 1 succeeded. Received upload plan:")
         print(f"  Key: {server_key}")
-        print(f"  Block Size: {block_size} 字节")
+        print(f"  Block Size: {block_size} bytes")
         print(f"  Total Blocks: {total_block}")
     except KeyError:
-        print("Phase 1 失败：服务器响应中缺少上传计划的关键字段。")
+        print("Phase 1 failed: Missing key fields in server response.")
         print(json.dumps(json_response, indent=2))
         return
 
-    # --- Phase 2: 上传数据块 (FILE/UPLOAD) ---
-    print("\nPhase 2: 开始逐块上传 (FILE/UPLOAD)...")
+    # --- Phase 2: Upload data blocks (FILE/UPLOAD) ---按照服务器在 Phase 1 返回的上传计划，将文件分块上传，并在每块上传后等待服务器确认，确保文件数据完整可靠地传输到服务器。
+    print("\nPhase 2: Starting block-by-block upload (FILE/UPLOAD)...")
 
     try:
-        with open(file_path, 'rb') as f:
+        with open(file_path, 'rb') as f:# open file in binary read mode
             for i in range(total_block):
-                print(f"  正在上传 block {i + 1}/{total_block}...", end=' ')
+                print(f"  Uploading block {i + 1}/{total_block}...", end=' ')
 
                 file_chunk = f.read(block_size)
                 if not file_chunk:
-                    print("错误：文件读取提前结束，数据块不足！")
+                    print("Error: File read ended prematurely, insufficient data block!")
                     return
 
-                upload_request_json = {
+                upload_request_json = {#上传文件块的json数据格式
                     "type": "FILE",
-                    "operation": "UPLOAD",
+                    "operation": "UPLOAD",# upload command so server.py STEP_service will call handle_file_upload, json_response will have md5 field
                     "direction": "REQUEST",
                     "token": token,
                     "key": server_key,
                     "block_index": i
                 }
 
-                # 发送 JSON 和 二进制文件块
+                # Send JSON and binary file chunk
                 client_socket.sendall(make_packet(upload_request_json, file_chunk))
 
-                # 等待每一块的确认
-                json_response, _ = get_tcp_packet(client_socket)
+                # Wait for confirmation of each block
+                json_response, bin_response = get_tcp_packet(client_socket)
 
                 if json_response is None or json_response.get('status') != 200:
-                    print(f"\n Phase 2 失败 (Block {i}): {json_response.get('status_msg', '无响应')}")
+                    print(f"\n Phase 2 failed (Block {i}): {json_response.get('status_msg', 'No response')}")
                     return
 
                 print("OK.")
 
-                # --- Phase 3: 验证 (MD5) ---
-                # 检查服务器对*最后一块*的响应是否包含 MD5
+                # --- Phase 3: Verification (MD5) ---
                 if 'md5' in json_response:
-                    print("\nPhase 3: 收到服务器最终确认 (MD5 验证)...")
+                    print("\nPhase 3: Received final confirmation from server (MD5 verification)...")
                     server_md5 = json_response['md5']
-                    print(f"  服务器计算的 MD5: {server_md5}")
+                    print(f"  Server computed MD5: {server_md5}")
 
-                    # 客户端计算本地文件的 MD5
+                    # Client computes local file MD5
                     client_md5 = get_file_md5(file_path)
-                    print(f"  客户端计算的 MD5: {client_md5}")
+                    print(f"  Client computed MD5: {client_md5}")
 
                     if server_md5.lower() == client_md5.lower():
-                        print("\nMD5 匹配! (Task 3 完成)")
-                        print("文件已成功上传并验证。")
+                        print("\nMD5 match! (Task 3 completed)")
+                        print("File successfully uploaded and verified.")
                     else:
-                        print("\n MD5 不匹配! 文件可能已损坏。")
-                    return  # 任务完成
+                        print("\n MD5 mismatch! File may be corrupted.")
+                    return  # Task completed
 
     except Exception as e:
-        print(f"\n Phase 2 发生意外错误: {e}")
+        print(f"\n Phase 2 encountered an unexpected error: {e}")
 
 #-------------------------------------------- main -----------------------------------------------------
 
 def main():
-    print("--- STEP 协议客户端 ---")
+    print("--- STEP Protocol Client ---")
 
-    # 1. 获取用户输入 student_id
-    student_id = input("请输入你的 Student ID: ")
+    # 1. Get user input for student_id
+    student_id = input("Please enter your Student ID: ")
     if not student_id:
-        print("错误：Student ID 不能为空。程序退出。")
+        print("Error: Student ID cannot be empty. Exiting program.")
         return
 
-    # 使用默认服务器 IP 和端口
+    ## Use default server IP and port
     server_ip = '127.0.0.1'
     server_port = 1379
 
-    print(f"\n正在尝试连接到 {server_ip}:{server_port}...")
+    print(f"\nAttempting to connect to {server_ip}:{server_port}...")
 
     client_socket = None
     try:
-        # 2. 建立 TCP 连接
+        # 2. Establish TCP connection
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client_socket.connect((server_ip, server_port))
-        print("连接成功！")
+        print("Connection successful!")
 
-        # 3. 执行 Task 2: 登录
+        # 3. Execute Task 2: Login
         token = task2_login(client_socket, student_id)
 
-        # 4. 登录成功后再让用户输入上传文件路径
+        # 4. If login is successful, prompt the user to input the file path for upload
         if token:
-            file_to_upload = input("请输入要上传的文件的路径 (例如: test.txt): ")
+            file_to_upload = input("Please enter the path of the file to upload (e.g., test.txt): ")
             if not file_to_upload:
-                print("错误：未指定上传文件。程序退出。")
+                print("Error: No file specified for upload. Exiting program.")
                 return
 
-            # 5. 执行 Task 3: 上传文件
+        # 5. # 5. Execute Task 3: Upload File
             task3_upload_file(client_socket, token, file_to_upload)
         else:
-            print("因登录失败，无法继续执行文件上传。")
+            print("Unable to proceed with file upload due to login failure.")
 
     except socket.error as e:
-        print(f"\nSocket 错误: {e}")
-        print("请确保服务器正在运行，并且 IP 和端口正确。")
+        print(f"\nSocket error: {e}")
+        print("Please ensure the server is running and the IP and port are correct.")
     except Exception as e:
-        print(f"\n发生意外错误: {e}")
+       print(f"\nUnexpected error: {e}")
     finally:
         if client_socket:
             client_socket.close()
-            print("\n连接已关闭。")
+        print("\nConnection closed.")
 
 if __name__ == '__main__':
     main()
