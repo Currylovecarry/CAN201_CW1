@@ -159,3 +159,5 @@
 [0;34m2025-11-06 18:47:37-STEP[INFO] Connection close. ('127.0.0.1', 57362) @ server.py[659][0m
 [0;34m2025-11-06 19:07:27-STEP[INFO] Server is ready! @ server.py[675][0m
 [0;34m2025-11-06 19:07:27-STEP[INFO] Start the TCP service, listing 1379 on IP All available @ server.py[676][0m
+[0;34m2025-11-07 12:22:51-STEP[INFO] Server is ready! @ server.py[675][0m
+[0;34m2025-11-07 12:22:51-STEP[INFO] Start the TCP service, listing 1379 on IP All available @ server.py[676][0m

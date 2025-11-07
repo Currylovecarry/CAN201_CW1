@@ -148,7 +148,7 @@ def get_tcp_packet(conn):
         bin_data
     """
     bin_data = b''
-    while len(bin_data) < 16:
+    while len(bin_data) < 8:
         data_rec = conn.recv(8)
         if data_rec == b'':
             time.sleep(0.01)
@@ -227,7 +227,7 @@ def data_process(username, request_operation, json_data, connection_socket):
         try:
             with open(join('data', username, key), 'w') as fid:
                 json.dump(json_data, fid)
-                logger.error(f'<-- Data is saved with key "{key}"')
+                logger.info(f'<-- Data is saved with key "{key}"')
                 connection_socket.send(
                     make_response_packet(OP_SAVE, 200, TYPE_DATA, f'Data is saved with key "{key}"', {FIELD_KEY: key}))
         except Exception as ex:
@@ -248,7 +248,7 @@ def data_process(username, request_operation, json_data, connection_socket):
             return
         try:
             os.remove(join('data', username, json_data[FIELD_KEY]))
-            logger.error(f'<-- The "key" {json_data[FIELD_KEY]} is deleted.')
+            logger.info(f'<-- The "key" {json_data[FIELD_KEY]} is deleted.')
             connection_socket.send(
                 make_response_packet(OP_DELETE, 200, TYPE_DATA, f'The "key" {json_data[FIELD_KEY]} is deleted.',
                                      {FIELD_KEY: json_data[FIELD_KEY]}))
@@ -269,7 +269,7 @@ def file_process(username, request_operation, json_data, bin_data, connection_so
     global logger
     if request_operation == OP_GET:
         if FIELD_KEY not in json_data.keys():
-            logger.info(f'--> Plan to download file {json_data[FIELD_KEY]}')
+            logger.info(f'--> Plan to download file without key.')
 
             connection_socket.send(
                 make_response_packet(OP_GET, 410, TYPE_FILE, f'Field "key" is missing for DATA GET.', {}))
@@ -340,7 +340,7 @@ def file_process(username, request_operation, json_data, bin_data, connection_so
             fid = open(join('tmp', username, key + '.log'), 'w')
             fid.close()
 
-            logger.error(f'<-- Upload plan: key {key}, total block number {total_block}, block size {block_size}.')
+            logger.info(f'<-- Upload plan: key {key}, total block number {total_block}, block size {block_size}.')
             connection_socket.send(
                 make_response_packet(OP_SAVE, 200, TYPE_FILE, f'This is the upload plan.', rval))
         except Exception as ex:
@@ -375,7 +375,7 @@ def file_process(username, request_operation, json_data, bin_data, connection_so
             return
         try:
             os.remove(join('file', username, json_data[FIELD_KEY]))
-            logger.error(f'<-- The "key" {json_data[FIELD_KEY]} is deleted.')
+            logger.info(f'<-- The "key" {json_data[FIELD_KEY]} is deleted.')
             connection_socket.send(
                 make_response_packet(OP_DELETE, 200, TYPE_FILE, f'The "key" {json_data[FIELD_KEY]} is deleted.',
                                      {FIELD_KEY: json_data[FIELD_KEY]}))
@@ -443,7 +443,7 @@ def file_process(username, request_operation, json_data, bin_data, connection_so
             fid.write(bin_data)
         with open(file_path + '.log', 'a') as fid:
             fid.write(f'{block_index}\n')
-        with open(file_path + '.log', 'r'):
+        with open(file_path + '.log', 'r') as fid:
             lines = fid.readlines()
         fid.close()
         rval = {
@@ -464,7 +464,7 @@ def file_process(username, request_operation, json_data, bin_data, connection_so
             logger.info(f'--> Download file/block without any key.')
             logger.error(f'<-- Field "key" is missing for FILE block downloading.')
             connection_socket.send(
-                make_response_packet(OP_GET, 410, TYPE_FILE, f'Field "key" is missing for FILE downloading.', {}))
+                make_response_packet(OP_DOWNLOAD, 410, TYPE_FILE, f'Field "key" is missing for FILE downloading.', {}))
             return
         logger.info(f'--> Download file/block of "key" {json_data[FIELD_KEY]}.')
 
@@ -496,12 +496,12 @@ def file_process(username, request_operation, json_data, bin_data, connection_so
         if block_index >= total_block:
             logger.error(f'<-- The "block_index" exceed the max index.')
             connection_socket.send(
-                make_response_packet(OP_GET, 410, TYPE_FILE, f'The "block_index" exceed the max index.', {}))
+                make_response_packet(OP_DOWNLOAD, 410, TYPE_FILE, f'The "block_index" exceed the max index.', {}))
             return
         if block_index < 0:
             logger.error(f'<-- The "block_index" should >= 0.')
             connection_socket.send(
-                make_response_packet(OP_GET, 410, TYPE_FILE, f'The "block_index" should >= 0.', {}))
+                make_response_packet(OP_DOWNLOAD, 410, TYPE_FILE, f'The "block_index" should >= 0.', {}))
             return
 
         with open(file_path, 'rb') as fid:
