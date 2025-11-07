@@ -332,13 +332,19 @@ def file_process(username, request_operation, json_data, bin_data, connection_so
                 FIELD_TOTAL_BLOCK: total_block,
                 FIELD_BLOCK_SIZE: block_size,
             }
-            # Write a tmp file
+            # Write a tmp file# Write a tmp file
             with open(join('tmp', username, key), 'wb+') as fid:
                 fid.seek(file_size - 1)
                 fid.write(b'\0')
 
-            fid = open(join('tmp', username, key + '.log'), 'w')
-            fid.close()
+            with open(join('tmp', username, key + '.log'), 'w') as fid:
+                pass
+            with open(join('tmp', username, key), 'wb+') as fid:
+                fid.seek(file_size - 1)
+                fid.write(b'\0')
+
+            with open(join('tmp', username, key + '.log'), 'w') as fid:
+                pass
 
             logger.info(f'<-- Upload plan: key {key}, total block number {total_block}, block size {block_size}.')
             connection_socket.send(
