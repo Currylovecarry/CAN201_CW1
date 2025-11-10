@@ -4,86 +4,12 @@ import json
 import hashlib
 import time
 import os
-
+import sys
+from server import get_file_md5, make_packet, get_tcp_packet
 #复用服务器中的函数
 #1.获取文件的md5值,
 #2.打包成 TCP 数据包
 #3.从 TCP 流中解析包
-
-def get_file_md5(filename):
-    """
-    Get MD5 value for big file
-    :param filename:
-    :return:
-    """
-    m = hashlib.md5()
-    with open(filename, 'rb') as fid:
-        while True:
-            d = fid.read(2048)
-            if not d:
-                break
-            m.update(d)
-    return m.hexdigest()
-
-def make_packet(json_data, bin_data=None):
-    """
-    Make a packet following the STEP protocol.
-    Any information or data for TCP transmission has to use this function to get the packet.
-    :param json_data:
-    :param bin_data:
-    :return:
-        The complete binary packet
-    """
-    j = json.dumps(dict(json_data), ensure_ascii=False)
-    j_len = len(j)
-    if bin_data is None:
-        return struct.pack('!II', j_len, 0) + j.encode()
-    else:
-        return struct.pack('!II', j_len, len(bin_data)) + j.encode() + bin_data
-
-def get_tcp_packet(conn):
-    """
-    Receive a complete TCP "packet" from a TCP stream and get the json data and binary data.
-    :param conn: the TCP connection
-    :return:
-        json_data
-        bin_data
-    """
-    bin_data = b''
-    while len(bin_data) < 16:
-        data_rec = conn.recv(8)
-        if data_rec == b'':
-            time.sleep(0.01)
-        if data_rec == b'':
-            return None, None
-        bin_data += data_rec
-    data = bin_data[:8]
-    bin_data = bin_data[8:]
-    j_len, b_len = struct.unpack('!II', data)
-    while len(bin_data) < j_len:
-        data_rec = conn.recv(j_len)
-        if data_rec == b'':
-            time.sleep(0.01)
-        if data_rec == b'':
-            return None, None
-        bin_data += data_rec
-    j_bin = bin_data[:j_len]
-
-    try:
-        json_data = json.loads(j_bin.decode())
-    except Exception as ex:
-        return None, None
-
-    bin_data = bin_data[j_len:]
-    while len(bin_data) < b_len:
-        data_rec = conn.recv(b_len)
-        if data_rec == b'':
-            time.sleep(0.01)
-        if data_rec == b'':
-            return None, None
-        bin_data += data_rec
-    return json_data, bin_data
-
 # ------------------------------------------ Task 2 ---------------------------------------------------
 
 def task2_login(client_socket, student_id):
@@ -246,11 +172,19 @@ def task3_upload_file(client_socket, token, file_path):
 def main():
     print("--- STEP Protocol Client ---")
 
-    # 1. Get user input for student_id
-    student_id = input("Please enter your Student ID: ")
-    if not student_id:
-        print("Error: Student ID cannot be empty. Exiting program.")
-        return
+    # Check command line arguments for student_id and file_to_upload
+    if len(sys.argv) >= 3:
+        student_id = sys.argv[1]
+        file_to_upload = sys.argv[2]
+        print(f"Student ID from command line: {student_id}")
+        print(f"File to upload from command line: {file_to_upload}")
+    else:
+        # 1. Get user input for student_id
+        student_id = input("Please enter your Student ID: ")
+        if not student_id:
+            print("Error: Student ID cannot be empty. Exiting program.")
+            return
+        file_to_upload = None
 
     ## Use default server IP and port
     server_ip = '127.0.0.1'
@@ -268,14 +202,15 @@ def main():
         # 3. Execute Task 2: Login
         token = task2_login(client_socket, student_id)
 
-        # 4. If login is successful, prompt the user to input the file path for upload
+        # 4. If login is successful, prompt the user to input the file path for upload if not provided via command line
         if token:
-            file_to_upload = input("Please enter the path of the file to upload (e.g., test.txt): ")
             if not file_to_upload:
-                print("Error: No file specified for upload. Exiting program.")
-                return
+                file_to_upload = input("Please enter the path of the file to upload (e.g., test.txt): ")
+                if not file_to_upload:
+                    print("Error: No file specified for upload. Exiting program.")
+                    return
 
-        # 5. # 5. Execute Task 3: Upload File
+            # 5. # 5. Execute Task 3: Upload File
             task3_upload_file(client_socket, token, file_to_upload)
         else:
             print("Unable to proceed with file upload due to login failure.")
