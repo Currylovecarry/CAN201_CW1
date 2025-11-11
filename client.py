@@ -172,23 +172,41 @@ def task3_upload_file(client_socket, token, file_path):
 def main():
     print("--- STEP Protocol Client ---")
 
-    # Check command line arguments for student_id and file_to_upload
-    if len(sys.argv) >= 3:
-        student_id = sys.argv[1]
-        file_to_upload = sys.argv[2]
-        print(f"Student ID from command line: {student_id}")
-        print(f"File to upload from command line: {file_to_upload}")
-    else:
-        # 1. Get user input for student_id
+    # Default values
+    server_ip = '127.0.0.1'
+    server_port = 1379
+    student_id = None
+    file_to_upload = None
+
+    # Parse command line arguments for --server_ip, --id, --f
+    args = sys.argv[1:]
+    i = 0
+    while i < len(args):
+        if args[i] == '--server_ip' and i+1 < len(args):
+            server_ip = args[i+1]
+            i += 2
+        elif args[i] == '--id' and i+1 < len(args):
+            student_id = args[i+1]
+            i += 2
+        elif args[i] == '--f' and i+1 < len(args):
+            file_to_upload = args[i+1]
+            i += 2
+        else:
+            i += 1
+
+    # If student_id not provided, ask user input
+    if not student_id:
         student_id = input("Please enter your Student ID: ")
         if not student_id:
             print("Error: Student ID cannot be empty. Exiting program.")
             return
-        file_to_upload = None
 
-    ## Use default server IP and port
-    server_ip = '127.0.0.1'
-    server_port = 1379
+    # If file_to_upload not provided, ask user input
+    if not file_to_upload:
+        file_to_upload = input("Please enter the file path to upload: ")
+        if not file_to_upload:
+            print("Error: File path cannot be empty. Exiting program.")
+            return
 
     print(f"\nAttempting to connect to {server_ip}:{server_port}...")
 
@@ -202,15 +220,8 @@ def main():
         # 3. Execute Task 2: Login
         token = task2_login(client_socket, student_id)
 
-        # 4. If login is successful, prompt the user to input the file path for upload if not provided via command line
+        # 4. If login is successful, upload file
         if token:
-            if not file_to_upload:
-                file_to_upload = input("Please enter the path of the file to upload (e.g., test.txt): ")
-                if not file_to_upload:
-                    print("Error: No file specified for upload. Exiting program.")
-                    return
-
-            # 5. # 5. Execute Task 3: Upload File
             task3_upload_file(client_socket, token, file_to_upload)
         else:
             print("Unable to proceed with file upload due to login failure.")
