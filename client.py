@@ -71,6 +71,7 @@ def task3_upload_file(client_socket, token, file_path):
     """
     print(f"\n--- Executing Task 3: Upload File ---")
     print(f"Preparing to upload: {file_path}")#文件路径
+    start_time = time.time()
 
     # Check if file exists
     if not os.path.exists(file_path):
@@ -165,6 +166,9 @@ def task3_upload_file(client_socket, token, file_path):
                     print(f"  Client computed MD5: {client_md5}")
 
                     if server_md5.lower() == client_md5.lower():
+                        end_time = time.time()
+                        elapsed_time_ms = (end_time - start_time) * 1000
+                        print(f"Total upload time: {elapsed_time_ms:.0f} ms")
                         print("\nMD5 match! (Task 3 completed)")
                         print("File successfully uploaded and verified.")
                     else:
@@ -205,9 +209,9 @@ def delete_file(client_socket, token, filename=None):
     status = json_response.get('status') or json_response.get('status_code') or 0
     status_msg = json_response.get('status_msg') or json_response.get('message') or ''
     if status == 200:
-        print(f"[+] Delete succeeded: {status_msg or 'OK'}")
+        print(f" Delete succeeded: {status_msg or 'OK'}")
     else:
-        print(f"[x] Delete failed ({status}): {status_msg}")
+        print(f" Delete failed ({status}): {status_msg}")
 
 #-------------------------------------------- main -----------------------------------------------------
 
@@ -249,7 +253,7 @@ def main():
             print("Error: Student ID cannot be empty. Exiting program.")
             return
 
-        mode = input("Choose operation: [U]pload / [D]elete ? (press Enter to cancel): ").strip().lower()
+        mode = input("Choose operation: [U]Upload / [D]Delete ? (press Enter to cancel): ").strip().lower()
         if mode == 'u':
             file_to_upload = input("Enter file path to upload: ").strip()
             if not file_to_upload:

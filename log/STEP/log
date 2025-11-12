@@ -289,3 +289,122 @@
 [0;34m2025-11-12 14:03:57-STEP[INFO] <-- The "key" 1.png is deleted. @ server.py[384][0m
 [0;34m2025-11-12 14:03:57-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
 [0;34m2025-11-12 14:03:57-STEP[INFO] Connection close. ('127.0.0.1', 64279) @ server.py[665][0m
+[0;34m2025-11-12 14:39:09-STEP[INFO] Server is ready! @ server.py[681][0m
+[0;34m2025-11-12 14:39:09-STEP[INFO] Start the TCP service, listing 1379 on IP All available @ server.py[682][0m
+[0;34m2025-11-12 14:39:22-STEP[INFO] --> New connection from 127.0.0.1 on 64859 @ server.py[687][0m
+[0;34m2025-11-12 14:39:22-STEP[INFO] --> Plan to save/upload a file with key "1.png" @ server.py[315][0m
+[0;34m2025-11-12 14:39:22-STEP[INFO] <-- Upload plan: key 1.png, total block number 11, block size 20480. @ server.py[349][0m
+[0;34m2025-11-12 14:39:22-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:39:22-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:39:22-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:39:22-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:39:22-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:39:22-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:39:22-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:39:22-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:39:22-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:39:22-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:39:22-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:39:22-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 14:39:22-STEP[INFO] Connection close. ('127.0.0.1', 64859) @ server.py[665][0m
+[0;34m2025-11-12 14:40:42-STEP[INFO] --> New connection from 127.0.0.1 on 64877 @ server.py[687][0m
+[0;34m2025-11-12 14:40:42-STEP[INFO] --> Plan to save/upload a file with key "CAN201 - STEP-Protocol.pdf" @ server.py[315][0m
+[0;34m2025-11-12 14:40:42-STEP[INFO] <-- Upload plan: key CAN201 - STEP-Protocol.pdf, total block number 7, block size 20480. @ server.py[349][0m
+[0;34m2025-11-12 14:40:42-STEP[INFO] --> Upload file/block of "key" CAN201 - STEP-Protocol.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:40:42-STEP[INFO] --> Upload file/block of "key" CAN201 - STEP-Protocol.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:40:42-STEP[INFO] --> Upload file/block of "key" CAN201 - STEP-Protocol.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:40:42-STEP[INFO] --> Upload file/block of "key" CAN201 - STEP-Protocol.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:40:42-STEP[INFO] --> Upload file/block of "key" CAN201 - STEP-Protocol.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:40:42-STEP[INFO] --> Upload file/block of "key" CAN201 - STEP-Protocol.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:40:42-STEP[INFO] --> Upload file/block of "key" CAN201 - STEP-Protocol.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:40:42-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 14:40:42-STEP[INFO] Connection close. ('127.0.0.1', 64877) @ server.py[665][0m
+[0;34m2025-11-12 14:43:57-STEP[INFO] --> New connection from 127.0.0.1 on 65019 @ server.py[687][0m
+[0;34m2025-11-12 14:43:57-STEP[INFO] --> Plan to save/upload a file with key "1.png" @ server.py[315][0m
+[0;34m2025-11-12 14:43:57-STEP[INFO] <-- Upload plan: key 1.png, total block number 11, block size 20480. @ server.py[349][0m
+[0;34m2025-11-12 14:43:57-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:43:57-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:43:57-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:43:57-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:43:57-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:43:57-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:43:57-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:43:57-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:43:57-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:43:57-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:43:57-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 14:43:57-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 14:43:57-STEP[INFO] Connection close. ('127.0.0.1', 65019) @ server.py[665][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> New connection from 127.0.0.1 on 65028 @ server.py[687][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Plan to save/upload a file with key "CAN201 - CW_Part I.pdf" @ server.py[315][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] <-- Upload plan: key CAN201 - CW_Part I.pdf, total block number 17, block size 20480. @ server.py[349][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] --> Upload file/block of "key" CAN201 - CW_Part I.pdf. @ server.py[398][0m
+[0;34m2025-11-12 14:44:38-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 14:44:38-STEP[INFO] Connection close. ('127.0.0.1', 65028) @ server.py[665][0m
+[0;34m2025-11-12 15:01:36-STEP[INFO] Server is ready! @ server.py[681][0m
+[0;34m2025-11-12 15:01:36-STEP[INFO] Start the TCP service, listing 1379 on IP All available @ server.py[682][0m
+[0;34m2025-11-12 15:02:14-STEP[INFO] --> New connection from 127.0.0.1 on 49156 @ server.py[687][0m
+[0;34m2025-11-12 15:02:42-STEP[INFO] --> Plan to save/upload a file with key "1.png" @ server.py[315][0m
+[0;34m2025-11-12 15:02:42-STEP[INFO] <-- Upload plan: key 1.png, total block number 11, block size 20480. @ server.py[349][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> New connection from 127.0.0.1 on 49161 @ server.py[687][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> New connection from 127.0.0.1 on 49162 @ server.py[687][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> New connection from 127.0.0.1 on 49163 @ server.py[687][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> New connection from 127.0.0.1 on 49164 @ server.py[687][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> New connection from 127.0.0.1 on 49165 @ server.py[687][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> New connection from 127.0.0.1 on 49166 @ server.py[687][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> New connection from 127.0.0.1 on 49167 @ server.py[687][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> New connection from 127.0.0.1 on 49168 @ server.py[687][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> New connection from 127.0.0.1 on 49169 @ server.py[687][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> New connection from 127.0.0.1 on 49170 @ server.py[687][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> New connection from 127.0.0.1 on 49171 @ server.py[687][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] --> Upload file/block of "key" 1.png. @ server.py[398][0m
+[0;34m2025-11-12 15:02:43-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] Connection close. ('127.0.0.1', 49161) @ server.py[665][0m
+[0;34m2025-11-12 15:02:43-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] Connection close. ('127.0.0.1', 49162) @ server.py[665][0m
+[0;34m2025-11-12 15:02:43-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 15:02:43-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] Connection close. ('127.0.0.1', 49164) @ server.py[665][0m
+[0;34m2025-11-12 15:02:43-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 15:02:43-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 15:02:43-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 15:02:43-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] Connection close. ('127.0.0.1', 49163) @ server.py[665][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] Connection close. ('127.0.0.1', 49165) @ server.py[665][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] Connection close. ('127.0.0.1', 49166) @ server.py[665][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] Connection close. ('127.0.0.1', 49168) @ server.py[665][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] Connection close. ('127.0.0.1', 49167) @ server.py[665][0m
+[0;34m2025-11-12 15:02:43-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] Connection close. ('127.0.0.1', 49170) @ server.py[665][0m
+[0;34m2025-11-12 15:02:43-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] Connection close. ('127.0.0.1', 49169) @ server.py[665][0m
+[0;34m2025-11-12 15:02:43-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 15:02:43-STEP[INFO] Connection close. ('127.0.0.1', 49171) @ server.py[665][0m
+[0;34m2025-11-12 15:05:05-STEP[WARNING] Connection is closed by client. @ server.py[552][0m
+[0;34m2025-11-12 15:05:05-STEP[INFO] Connection close. ('127.0.0.1', 49156) @ server.py[665][0m
