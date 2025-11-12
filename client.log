@@ -1,0 +1,37 @@
+2025-11-12 15:02:14,351 - INFO - Connection successful!
+2025-11-12 15:02:14,355 - INFO - --- Executing Task 2: Login ---
+2025-11-12 15:02:14,357 - INFO - Username (student_id): 123444
+2025-11-12 15:02:14,357 - INFO - Password (MD5(Student ID)): 6886badb36...
+2025-11-12 15:02:14,357 - INFO - Sending login request...
+2025-11-12 15:02:14,357 - INFO - Waiting for server response...
+2025-11-12 15:02:14,360 - INFO - Server response: {
+  "token": "MTIzNDQ0LjIwMjUxMTEyMTUwMjE0LmxvZ2luLmYzMDEzNTVjOTg1NDkyM2Q1MTY0ZTY3ZjM1NzUwMzQ4",
+  "operation": "LOGIN",
+  "direction": "RESPONSE",
+  "status": 200,
+  "status_msg": "Login successfully",
+  "type": "AUTH"
+}
+2025-11-12 15:02:14,360 - INFO - Login successful! (Task 2 completed)
+2025-11-12 15:02:14,360 - INFO - Received Token: MTIzNDQ0LjIwMjU...
+2025-11-12 15:02:42,080 - INFO - --- Single Thread Upload ---
+2025-11-12 15:02:42,081 - INFO - --- Executing Enhanced Task 3: Upload File ---
+2025-11-12 15:02:42,082 - INFO - Preparing to upload: 1.png
+2025-11-12 15:02:42,082 - INFO - Using 1 threads, max 3 retries per block
+2025-11-12 15:02:42,082 - INFO - Phase 1: Requesting upload permission (FILE/SAVE)...
+2025-11-12 15:02:42,090 - INFO - Phase 1 succeeded. Received upload plan:
+2025-11-12 15:02:42,090 - INFO -   Key: 1.png
+2025-11-12 15:02:42,090 - INFO -   Block Size: 20480 bytes
+2025-11-12 15:02:42,090 - INFO -   Total Blocks: 11
+2025-11-12 15:02:42,090 - INFO - Phase 2: Starting multi-threaded block upload...
+2025-11-12 15:02:43,247 - INFO - Received final MD5 from server: 87de69aedfe6731ad5b92a46342316c6
+2025-11-12 15:02:43,247 - INFO - Phase 3: Performing final verification...
+2025-11-12 15:02:43,247 - INFO - === Upload Performance ===
+2025-11-12 15:02:43,247 - INFO - File size: 0.21 MB
+2025-11-12 15:02:43,247 - INFO - Upload time: 1.17 seconds
+2025-11-12 15:02:43,247 - INFO - Upload speed: 0.18 MB/s
+2025-11-12 15:02:43,247 - INFO - Blocks: 11, Threads: 1
+2025-11-12 15:02:43,247 - INFO - Server computed MD5: 87de69aedfe6731ad5b92a46342316c6
+2025-11-12 15:02:43,248 - INFO - Client computed MD5: 87de69aedfe6731ad5b92a46342316c6
+2025-11-12 15:02:43,248 - INFO - MD5 match! (Task 3 completed)
+2025-11-12 15:02:43,248 - INFO - File successfully uploaded and verified.
