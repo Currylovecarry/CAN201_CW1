@@ -53,7 +53,7 @@ def task2_login(client_socket, student_id):
         token = json_response.get('token')#也是在server.py中STEP_service，登录成功会返回token 这个token的值也是在server定义好的
         if token:
             print("Login successful! (Task 2 completed)")
-            print(f"Received Token: {token[:15]}...")
+            print(f"Token: {token}")
             return token
         else:
             print("Login failed: Server returned 200 OK but no token included.")
@@ -119,8 +119,6 @@ def task3_upload_file(client_socket, token, file_path):
     try:
         with open(file_path, 'rb') as f:# open file in binary read mode
             for i in range(total_block):
-                print(f"  Uploading block {i + 1}/{total_block}...", end=' ')
-
                 file_chunk = f.read(block_size)
                 if not file_chunk:
                     print("Error: File read ended prematurely, insufficient data block!")
@@ -145,7 +143,16 @@ def task3_upload_file(client_socket, token, file_path):
                     print(f"\n Phase 2 failed (Block {i}): {json_response.get('status_msg', 'No response')}")
                     return
 
-                print("OK.")
+                #进度条显示
+                progress = (i + 1) / total_block
+                bar_len = 30
+                filled_len = int(bar_len * progress)
+                bar = '█' * filled_len + '-' * (bar_len - filled_len)
+                print(f"\rUploading: |{bar}| {progress*100:6.2f}%", end='')
+
+                # 最后一块时换行
+                if i + 1 == total_block:
+                    print()
 
                 # --- Phase 3: Verification (MD5) ---
                 if 'md5' in json_response:
@@ -167,6 +174,41 @@ def task3_upload_file(client_socket, token, file_path):
     except Exception as e:
         print(f"\n Phase 2 encountered an unexpected error: {e}")
 
+def delete_file(client_socket, token, filename=None):
+    """
+    Delete file from server.
+    If filename is not provided, ask user interactively.
+    """
+    # Interactive input (only when not provided via command-line arguments)
+    if not filename:
+        filename = input("Please enter the name of the file to delete (Press Enter to cancel): ").strip()
+        if not filename:
+            print("No filename provided. Cancelled.")
+            return
+
+    payload = {
+        "type": "FILE",
+        "operation": "DELETE",
+        "direction": "REQUEST",
+        "token": token,
+        "key": filename
+    }
+
+    client_socket.sendall(make_packet(payload))
+
+    json_response, _ = get_tcp_packet(client_socket)
+
+    if json_response is None:
+        print("[x] No response from server (connection closed?)")
+        return
+
+    status = json_response.get('status') or json_response.get('status_code') or 0
+    status_msg = json_response.get('status_msg') or json_response.get('message') or ''
+    if status == 200:
+        print(f"[+] Delete succeeded: {status_msg or 'OK'}")
+    else:
+        print(f"[x] Delete failed ({status}): {status_msg}")
+
 #-------------------------------------------- main -----------------------------------------------------
 
 def main():
@@ -177,60 +219,95 @@ def main():
     server_port = 1379
     student_id = None
     file_to_upload = None
+    file_to_delete = None
+    interactive_mode = False
 
     # Parse command line arguments for --server_ip, --id, --f
     args = sys.argv[1:]
     i = 0
     while i < len(args):
-        if args[i] == '--server_ip' and i+1 < len(args):
-            server_ip = args[i+1]
+        if args[i] in ('--server_ip', '-s') and i + 1 < len(args):
+            server_ip = args[i + 1]
             i += 2
-        elif args[i] == '--id' and i+1 < len(args):
-            student_id = args[i+1]
+        elif args[i] in ('--id', '-i') and i + 1 < len(args):
+            student_id = args[i + 1]
             i += 2
-        elif args[i] == '--f' and i+1 < len(args):
-            file_to_upload = args[i+1]
+        elif args[i] in ('--f', '-f') and i + 1 < len(args):
+            file_to_upload = args[i + 1]
+            i += 2
+        elif args[i] in ('--d', '-d') and i + 1 < len(args):
+            file_to_delete = args[i + 1]
             i += 2
         else:
             i += 1
 
-    # If student_id not provided, ask user input
-    if not student_id:
-        student_id = input("Please enter your Student ID: ")
+    # If no parameters are provided, the interactive mode will be entered.
+    if not args:
+        interactive_mode = True
+        student_id = input("Please enter your Student ID: ").strip()
         if not student_id:
             print("Error: Student ID cannot be empty. Exiting program.")
             return
 
-    # If file_to_upload not provided, ask user input
-    if not file_to_upload:
-        file_to_upload = input("Please enter the file path to upload: ")
-        if not file_to_upload:
-            print("Error: File path cannot be empty. Exiting program.")
+        mode = input("Choose operation: [U]pload / [D]elete ? (press Enter to cancel): ").strip().lower()
+        if mode == 'u':
+            file_to_upload = input("Enter file path to upload: ").strip()
+            if not file_to_upload:
+                print("No file path entered. Exiting.")
+                return
+        elif mode == 'd':
+            file_to_delete = input("Enter filename to delete: ").strip()
+            if not file_to_delete:
+                print("No filename entered. Exiting.")
+                return
+        else:
+            print("Cancelled by user.")
             return
+    #参数模式
+    if not student_id:
+        student_id = input("Please enter your Student ID: ").strip()
+        if not student_id:
+            print("Error: Student ID cannot be empty. Exiting program.")
+            return
+
+    if not file_to_upload and not file_to_delete:
+        print("Error: You must specify either --f <file> to upload or --d <file> to delete.")
+        return
 
     print(f"\nAttempting to connect to {server_ip}:{server_port}...")
 
     client_socket = None
     try:
-        # 2. Establish TCP connection
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         client_socket.connect((server_ip, server_port))
         print("Connection successful!")
 
-        # 3. Execute Task 2: Login
+        # Execute Task 2: Login
         token = task2_login(client_socket, student_id)
+        if not token:
+            print("Login failed, cannot proceed.")
+            return
 
-        # 4. If login is successful, upload file
-        if token:
+        # --- 上传逻辑 ---
+        if file_to_upload:
             task3_upload_file(client_socket, token, file_to_upload)
-        else:
-            print("Unable to proceed with file upload due to login failure.")
+
+            # 只有命令行模式且同时传了 --d 才自动删除
+            if not interactive_mode and file_to_delete:
+                print(f"\n-- Both upload and delete specified. Deleting '{file_to_delete}'...")
+                delete_file(client_socket, token, file_to_delete)
+
+        if file_to_delete:
+            # 交互模式下只有用户主动选择删除才执行
+            if not interactive_mode or (interactive_mode and not file_to_upload):
+                print(f"\nExecuting delete operation for '{file_to_delete}'...")
+                delete_file(client_socket, token, file_to_delete)
 
     except socket.error as e:
         print(f"\nSocket error: {e}")
         print("Please ensure the server is running and the IP and port are correct.")
     except Exception as e:
-       print(f"\nUnexpected error: {e}")
+        print(f"\nUnexpected error: {e}")
     finally:
         if client_socket:
             client_socket.close()
