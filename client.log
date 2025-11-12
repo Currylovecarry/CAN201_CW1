@@ -35,3 +35,151 @@
 2025-11-12 15:02:43,248 - INFO - Client computed MD5: 87de69aedfe6731ad5b92a46342316c6
 2025-11-12 15:02:43,248 - INFO - MD5 match! (Task 3 completed)
 2025-11-12 15:02:43,248 - INFO - File successfully uploaded and verified.
+2025-11-12 15:19:32,215 - INFO - Connection successful!
+2025-11-12 15:19:32,216 - INFO - --- Executing Task 2: Login ---
+2025-11-12 15:19:32,216 - INFO - Username (student_id): 123341
+2025-11-12 15:19:32,216 - INFO - Password (MD5(Student ID)): 06f77032b3...
+2025-11-12 15:19:32,216 - INFO - Sending login request...
+2025-11-12 15:19:32,217 - INFO - Waiting for server response...
+2025-11-12 15:19:32,217 - INFO - Server response: {
+  "token": "MTIzMzQxLjIwMjUxMTEyMTUxOTMyLmxvZ2luLmFjNzEyYjk4MDY1NTkzZTgyODdhNjYzNDIzNTk3NzQ3",
+  "operation": "LOGIN",
+  "direction": "RESPONSE",
+  "status": 200,
+  "status_msg": "Login successfully",
+  "type": "AUTH"
+}
+2025-11-12 15:19:32,217 - INFO - Login successful! (Task 2 completed)
+2025-11-12 15:19:32,217 - INFO - Received Token: MTIzMzQxLjIwMjU...
+2025-11-12 15:19:56,600 - ERROR - Error in interactive menu: EOF when reading a line
+2025-11-12 15:20:17,279 - INFO - Connection successful!
+2025-11-12 15:20:17,280 - INFO - --- Executing Task 2: Login ---
+2025-11-12 15:20:17,280 - INFO - Username (student_id): 123123124
+2025-11-12 15:20:17,281 - INFO - Password (MD5(Student ID)): 5f1882ab59...
+2025-11-12 15:20:17,281 - INFO - Sending login request...
+2025-11-12 15:20:17,281 - INFO - Waiting for server response...
+2025-11-12 15:20:17,282 - INFO - Server response: {
+  "token": "MTIzMTIzMTI0LjIwMjUxMTEyMTUyMDE3LmxvZ2luLmZmMDE0MmJmZDUxOTEzNTRiYzdlZmJmYzI2MGRhM2M1",
+  "operation": "LOGIN",
+  "direction": "RESPONSE",
+  "status": 200,
+  "status_msg": "Login successfully",
+  "type": "AUTH"
+}
+2025-11-12 15:20:17,282 - INFO - Login successful! (Task 2 completed)
+2025-11-12 15:20:17,282 - INFO - Received Token: MTIzMTIzMTI0LjI...
+2025-11-12 15:21:05,918 - INFO - --- Single Thread Upload ---
+2025-11-12 15:21:05,920 - INFO - --- Executing Enhanced Task 3: Upload File ---
+2025-11-12 15:21:05,920 - INFO - Preparing to upload: 1.png
+2025-11-12 15:21:05,920 - INFO - Using 1 threads, max 3 retries per block
+2025-11-12 15:21:05,920 - INFO - Phase 1: Requesting upload permission (FILE/SAVE)...
+2025-11-12 15:21:05,925 - INFO - Phase 1 succeeded. Received upload plan:
+2025-11-12 15:21:05,925 - INFO -   Key: 1.png
+2025-11-12 15:21:05,925 - INFO -   Block Size: 20480 bytes
+2025-11-12 15:21:05,925 - INFO -   Total Blocks: 11
+2025-11-12 15:21:05,925 - INFO - Phase 2: Starting multi-threaded block upload...
+2025-11-12 15:21:05,952 - INFO - Received final MD5 from server: 87de69aedfe6731ad5b92a46342316c6
+2025-11-12 15:21:05,953 - INFO - Phase 3: Performing final verification...
+2025-11-12 15:21:05,953 - INFO - === Upload Performance ===
+2025-11-12 15:21:05,953 - INFO - File size: 0.21 MB
+2025-11-12 15:21:05,953 - INFO - Upload time: 0.03 seconds
+2025-11-12 15:21:05,953 - INFO - Upload speed: 6.38 MB/s
+2025-11-12 15:21:05,953 - INFO - Blocks: 11, Threads: 1
+2025-11-12 15:21:05,953 - INFO - Server computed MD5: 87de69aedfe6731ad5b92a46342316c6
+2025-11-12 15:21:05,953 - INFO - Client computed MD5: 87de69aedfe6731ad5b92a46342316c6
+2025-11-12 15:21:05,953 - INFO - MD5 match! (Task 3 completed)
+2025-11-12 15:21:05,953 - INFO - File successfully uploaded and verified.
+2025-11-12 15:23:42,748 - INFO - Connection successful!
+2025-11-12 15:23:42,749 - INFO - --- Executing Task 2: Login ---
+2025-11-12 15:23:42,749 - INFO - Username (student_id): 123131
+2025-11-12 15:23:42,749 - INFO - Password (MD5(Student ID)): 4c4711ea06...
+2025-11-12 15:23:42,749 - INFO - Sending login request...
+2025-11-12 15:23:42,749 - INFO - Waiting for server response...
+2025-11-12 15:23:42,750 - INFO - Server response: {
+  "token": "MTIzMTMxLjIwMjUxMTEyMTUyMzQyLmxvZ2luLjJmY2I5MTA2N2I5OWVjODk4ZGY0OGMwMDM1NGJmNDFm",
+  "operation": "LOGIN",
+  "direction": "RESPONSE",
+  "status": 200,
+  "status_msg": "Login successfully",
+  "type": "AUTH"
+}
+2025-11-12 15:23:42,750 - INFO - Login successful! (Task 2 completed)
+2025-11-12 15:23:42,751 - INFO - Received Token: MTIzMTMxLjIwMjU...
+2025-11-12 15:26:42,593 - INFO - Connection successful!
+2025-11-12 15:26:42,594 - INFO - --- Executing Task 2: Login ---
+2025-11-12 15:26:42,594 - INFO - Username (student_id): 2131234
+2025-11-12 15:26:42,594 - INFO - Password (MD5(Student ID)): e336fa2a07...
+2025-11-12 15:26:42,594 - INFO - Sending login request...
+2025-11-12 15:26:42,595 - INFO - Waiting for server response...
+2025-11-12 15:26:42,597 - INFO - Server response: {
+  "token": "MjEzMTIzNC4yMDI1MTExMjE1MjY0Mi5sb2dpbi5jZjExNjRkM2Y2MTNjZWZiMjFhNmU2ZTI2MGFlM2IxYQ==",
+  "operation": "LOGIN",
+  "direction": "RESPONSE",
+  "status": 200,
+  "status_msg": "Login successfully",
+  "type": "AUTH"
+}
+2025-11-12 15:26:42,597 - INFO - Login successful! (Task 2 completed)
+2025-11-12 15:26:42,597 - INFO - Received Token: MjEzMTIzNC4yMDI...
+2025-11-12 15:39:57,255 - INFO - Connected to server
+2025-11-12 15:39:57,257 - INFO - Task 2: Login
+2025-11-12 15:39:57,263 - INFO - Login successful
+2025-11-12 15:39:57,263 - INFO - Token: MTIzMTMuMjAyNTE...
+2025-11-12 15:40:16,120 - INFO - Deleting file: 1.png
+2025-11-12 15:40:16,124 - ERROR - Delete failed: The "key" 1.png is not existing.
+2025-11-12 15:40:38,815 - INFO - Connected to server
+2025-11-12 15:40:38,815 - INFO - Task 2: Login
+2025-11-12 15:40:38,820 - INFO - Login successful
+2025-11-12 15:40:38,820 - INFO - Token: MTIzMTQuMjAyNTE...
+2025-11-12 15:40:46,667 - INFO - Single Thread Upload
+2025-11-12 15:40:46,669 - INFO - Uploading: 1.png
+2025-11-12 15:40:46,669 - INFO - Threads: 1, Max retries: 3
+2025-11-12 15:40:46,676 - INFO - Upload plan: 11 blocks, 20480 bytes each
+2025-11-12 15:40:46,706 - INFO - === Upload Performance ===
+2025-11-12 15:40:46,706 - INFO - File size: 0.21 MB
+2025-11-12 15:40:46,706 - INFO - Upload time: 37 ms
+2025-11-12 15:40:46,707 - INFO - Upload speed: 5.61 MB/s
+2025-11-12 15:40:46,707 - INFO - MD5 match - Upload successful
+2025-11-12 15:41:56,478 - INFO - Connecting to 127.0.0.1:1379
+2025-11-12 15:41:56,478 - INFO - Threads: 4, Retries: 3
+2025-11-12 15:41:56,478 - INFO - Connected
+2025-11-12 15:41:56,478 - INFO - Task 2: Login
+2025-11-12 15:41:56,480 - INFO - Login successful
+2025-11-12 15:41:56,480 - INFO - Token: MjM0MzQzMi4yMDI...
+2025-11-12 15:41:56,480 - INFO - Uploading: 1.png
+2025-11-12 15:41:56,480 - INFO - Threads: 4, Max retries: 3
+2025-11-12 15:41:56,480 - ERROR - Upload permission failed: This "key" 1.png is existing.
+2025-11-12 15:41:56,480 - ERROR - Upload failed
+2025-11-12 15:41:56,480 - INFO - Connection closed
+2025-11-12 15:42:28,698 - INFO - Connecting to 127.0.0.1:1379
+2025-11-12 15:42:28,698 - INFO - Threads: 4, Retries: 3
+2025-11-12 15:42:28,699 - INFO - Connected
+2025-11-12 15:42:28,699 - INFO - Task 2: Login
+2025-11-12 15:42:28,704 - INFO - Login successful
+2025-11-12 15:42:28,704 - INFO - Token: MjMyMzQxNDQzNDM...
+2025-11-12 15:42:28,704 - INFO - Uploading: 1.png
+2025-11-12 15:42:28,704 - INFO - Threads: 4, Max retries: 3
+2025-11-12 15:42:28,707 - INFO - Upload plan: 11 blocks, 20480 bytes each
+2025-11-12 15:42:58,730 - INFO - === Upload Performance ===
+2025-11-12 15:42:58,731 - INFO - File size: 0.21 MB
+2025-11-12 15:42:58,731 - INFO - Upload time: 30026 ms
+2025-11-12 15:42:58,731 - INFO - Upload speed: 0.01 MB/s
+2025-11-12 15:42:58,733 - INFO - MD5 match - Upload successful
+2025-11-12 15:42:58,734 - INFO - All tasks completed
+2025-11-12 15:42:58,734 - INFO - Connection closed
+2025-11-12 15:44:02,628 - INFO - Connecting to 127.0.0.1:1379
+2025-11-12 15:44:02,628 - INFO - Threads: 4, Retries: 3
+2025-11-12 15:44:02,629 - INFO - Connected
+2025-11-12 15:44:02,629 - INFO - Task 2: Login
+2025-11-12 15:44:02,631 - INFO - Login successful
+2025-11-12 15:44:02,631 - INFO - Token: MjM0MzIuMjAyNTE...
+2025-11-12 15:44:02,631 - INFO - Uploading: 1.png
+2025-11-12 15:44:02,631 - INFO - Threads: 4, Max retries: 3
+2025-11-12 15:44:02,632 - INFO - Upload plan: 11 blocks, 20480 bytes each
+2025-11-12 15:44:02,663 - INFO - === Upload Performance ===
+2025-11-12 15:44:02,663 - INFO - File size: 0.21 MB
+2025-11-12 15:44:02,663 - INFO - Upload time: 32 ms
+2025-11-12 15:44:02,663 - INFO - Upload speed: 6.54 MB/s
+2025-11-12 15:44:02,663 - INFO - MD5 match - Upload successful
+2025-11-12 15:44:02,663 - INFO - All tasks completed
+2025-11-12 15:44:02,663 - INFO - Connection closed
