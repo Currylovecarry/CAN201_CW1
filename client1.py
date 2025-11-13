@@ -474,7 +474,7 @@ def main():
     server_port = 1379
     student_id = None
     file_to_upload = None
-    file_to_delete = None
+    files_to_delete = []
     num_threads = 4
     max_retries = 3
 
@@ -492,7 +492,7 @@ def main():
             file_to_upload = args[i + 1]
             i += 2
         elif args[i] == '--d' and i + 1 < len(args):
-            file_to_delete = args[i + 1]
+            files_to_delete.append(args[i + 1])  # 修改点：添加到列表
             i += 2
         elif args[i] == '--threads' and i + 1 < len(args):
             num_threads = int(args[i + 1])
@@ -510,10 +510,15 @@ def main():
             print("Student ID cannot be empty")
             return
 
-    # If delete file specified, execute delete operation
-    if file_to_delete:
+    if file_to_upload or files_to_delete:
         logger.info(f"Connecting to {server_ip}:{server_port}")
-        logger.info(f"Deleting file: {file_to_delete}")
+
+        if file_to_upload:
+            logger.info(f"Upload file: {file_to_upload}")
+            logger.info(f"Threads: {num_threads}, Retries: {max_retries}")
+
+        if files_to_delete:
+            logger.info(f"Delete files: {', '.join(files_to_delete)}")
 
         client_socket = None
         try:
@@ -526,13 +531,37 @@ def main():
             # Execute Task 2: Login
             token = task2_login(client_socket, student_id)
 
-            # If login is successful, delete file
+            # If login is successful, perform operations
             if token:
-                success = task4_delete_file(client_socket, token, file_to_delete)
-                if success:
-                    logger.info("File deletion completed")
-                else:
-                    logger.error("File deletion failed")
+                upload_success = True
+                if file_to_upload:
+                    upload_success = task3_upload_file(
+                        client_socket, token, file_to_upload,
+                        server_ip, server_port, num_threads, max_retries
+                    )
+
+                delete_results = []
+                if files_to_delete:
+                    for file_to_delete in files_to_delete:
+                        delete_success = task4_delete_file(client_socket, token, file_to_delete)
+                        delete_results.append((file_to_delete, delete_success))
+
+                # 修改点：汇总结果
+                if file_to_upload and upload_success:
+                    logger.info("Upload completed successfully")
+
+                if files_to_delete:
+                    successful_deletes = [f for f, success in delete_results if success]
+                    failed_deletes = [f for f, success in delete_results if not success]
+
+                    if successful_deletes:
+                        logger.info(f"Successfully deleted: {', '.join(successful_deletes)}")
+                    if failed_deletes:
+                        logger.error(f"Failed to delete: {', '.join(failed_deletes)}")
+
+                if not file_to_upload and not files_to_delete:
+                    logger.info("No operations performed")
+
             else:
                 logger.error("Login failed")
 
@@ -546,60 +575,20 @@ def main():
             logger.info("Connection closed")
         return
 
-    # If no file provided, enter interactive mode
-    if not file_to_upload:
-        # Get server info for interactive mode
-        server_ip_input = input(f"Server IP [{server_ip}]: ").strip()
-        if server_ip_input:
-            server_ip = server_ip_input
+    # If no operations specified, enter interactive mode
+    # Get server info for interactive mode
+    server_ip_input = input(f"Server IP [{server_ip}]: ").strip()
+    if server_ip_input:
+        server_ip = server_ip_input
 
-        server_port_input = input(f"Server port [{server_port}]: ").strip()
-        if server_port_input:
-            try:
-                server_port = int(server_port_input)
-            except ValueError:
-                print(f"Invalid port, using default: {server_port}")
+    server_port_input = input(f"Server port [{server_port}]: ").strip()
+    if server_port_input:
+        try:
+            server_port = int(server_port_input)
+        except ValueError:
+            print(f"Invalid port, using default: {server_port}")
 
-        interactive_menu(server_ip, server_port, student_id)
-        return
-
-    # Command line mode with file upload
-    logger.info(f"Connecting to {server_ip}:{server_port}")
-    logger.info(f"Threads: {num_threads}, Retries: {max_retries}")
-
-    client_socket = None
-    try:
-        # Establish TCP connection
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.settimeout(60)
-        client_socket.connect((server_ip, server_port))
-        logger.info("Connected")
-
-        # Execute Task 2: Login
-        token = task2_login(client_socket, student_id)
-
-        # If login is successful, upload file with enhanced features
-        if token:
-            success = task3_upload_file(
-                client_socket, token, file_to_upload,
-                server_ip, server_port, num_threads, max_retries
-            )
-
-            if success:
-                logger.info("All tasks completed")
-            else:
-                logger.error("Upload failed")
-        else:
-            logger.error("Login failed")
-
-    except socket.error as e:
-        logger.error(f"Connection error: {e}")
-    except Exception as e:
-        logger.error(f"Error: {e}")
-    finally:
-        if client_socket:
-            client_socket.close()
-        logger.info("Connection closed")
+    interactive_menu(server_ip, server_port, student_id)
 
 
 if __name__ == '__main__':
